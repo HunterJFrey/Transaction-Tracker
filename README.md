@@ -1,6 +1,6 @@
-# transactions
+# TransactionTracker
 
-A new Flutter application.
+A simple transaction tracker.
 
 ## Getting Started
 
