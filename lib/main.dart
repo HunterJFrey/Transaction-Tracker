@@ -6,6 +6,9 @@ import 'package:transactions/database/database.dart';
 import 'package:transactions/MoneyTransactionsPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+//const backgroundColorTheme = const Color(0xff32322C);
+//const textColor = const Color(0xff13C4A3);
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -15,7 +18,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
+        hintColor: Color(0xff13C4A3),
+        secondaryHeaderColor: Color(0xff13C4A3),
+        accentColor: Color(0xff32322C),
+        dialogBackgroundColor: Color(0xff32322C),
+        cursorColor: Color(0xff13C4A3),
+        toggleableActiveColor: Color(0xff13C4A3),
+        primarySwatch: Colors.grey,
+        textTheme: Theme.of(context).textTheme.apply(
+            bodyColor: Color(0xff13C4A3),
+            displayColor: Color(0xff13C4A3),
+        ),
+        scaffoldBackgroundColor: Color(0xff32322C),
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -38,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController nameController = new TextEditingController();
   TextEditingController totalController = new TextEditingController();
   TextEditingController balanceController = new TextEditingController();
+  TextEditingController searchTransController = new TextEditingController();
   double currentBalance = 0.0;
   SharedPreferences sharedPreferences;
   DateTime selectedDate = DateTime.now();
@@ -47,7 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       initialDate: new DateTime.now(),
       firstDate: new DateTime(2019),
-      lastDate: new DateTime(2100)
+      lastDate: new DateTime(2100),
+
     );
     if(picked != null) {
       setState(() {
@@ -79,7 +95,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text('Transactions List'),
+        textTheme: Theme.of(context).textTheme.apply(),
+        iconTheme: IconThemeData(
+          color: Color(0xff13C4A3),
+        ),
+        title: Text('Transaction Tracker'),
         actions: <Widget>[
           //ADD TO TOTAL
           new IconButton(
@@ -89,26 +109,39 @@ class _MyHomePageState extends State<MyHomePage> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
+                          backgroundColor: Color(0xff32322C),
                           title: new Text("Add Transaction", textAlign: TextAlign.center),
                           content: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget> [
                                 Column(
+                                  
                                   children: <Widget>[
                                     TextFormField(
                                       decoration: InputDecoration(
-                                          labelText: "Transaction Name"
+                                          labelText: "Transaction Name",
+                                          labelStyle: TextStyle(color : Color(0xff13C4A3),),
+                                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color : Color(0xff13C4A3))),
                                       ),
                                       controller: nameController,
+                                      style: new TextStyle(color : Color(0xff13C4A3),)
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(10.0),
                                     ),
                                     TextFormField(
                                       keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
-                                          labelText: "Total"
+                                          labelText: "Total",
+                                          labelStyle: TextStyle(color : Color(0xff13C4A3),),
+                                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color : Color(0xff13C4A3))),
                                       ),
                                       controller: totalController,
                                     ),
                                   ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(10.0),
                                 ),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -119,6 +152,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                               setState(() {});
                                           } ,
                                           child: Text("${selectedDate.day}/${selectedDate.month}/${selectedDate.year}"),
+                                          color: Colors.white30,
+                                          textColor: Color(0xff13C4A3),
                                       )
                                     ]
 
@@ -127,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget> [
                                       FlatButton(
+                                          textColor: Color(0xff13C4A3),
                                           child: Text("Cancel"),
                                           onPressed: () {
                                             Navigator.of(context).pop();
@@ -135,6 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           }
                                       ),
                                       FlatButton(
+                                          textColor: Color(0xff13C4A3),
                                           child: Text("Add"),
                                           onPressed: () {
                                             Navigator.of(context).pop();
@@ -173,18 +210,28 @@ class _MyHomePageState extends State<MyHomePage> {
                                   children: <Widget>[
                                     TextFormField(
                                       decoration: InputDecoration(
-                                          labelText: "Transaction Name"
+                                          labelText: "Transaction Name",
+                                          labelStyle: TextStyle(color : Color(0xff13C4A3),),
+                                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color : Color(0xff13C4A3))),
                                       ),
                                       controller: nameController,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(10.0),
                                     ),
                                     TextFormField(
                                       keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
-                                          labelText: "Total"
+                                          labelText: "Total",
+                                          labelStyle: TextStyle(color : Color(0xff13C4A3),),
+                                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color : Color(0xff13C4A3))),
                                       ),
                                       controller: totalController,
                                     ),
                                   ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(10.0),
                                 ),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -195,6 +242,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                           setState(() {});
                                         } ,
                                         child: Text("${selectedDate.day}/${selectedDate.month}/${selectedDate.year}"),
+                                        color: Colors.white30,
+                                        textColor: Color(0xff13C4A3),
                                       )
                                     ]
 
@@ -203,6 +252,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget> [
                                       FlatButton(
+                                          textColor: Color(0xff13C4A3),
                                           child: Text("Cancel"),
                                           onPressed: () {
                                             Navigator.of(context).pop();
@@ -211,6 +261,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           }
                                       ),
                                       FlatButton(
+                                          textColor: Color(0xff13C4A3),
                                           child: Text("Add"),
                                           onPressed: () {
                                             Navigator.of(context).pop();
@@ -232,39 +283,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               }
           ),
-          //NAVIGATE TO TRANSACTIONS PAGE
-          new IconButton(
-            icon: const Icon(Icons.view_list),
-            onPressed: () {
-              navigateToMoneyTransactionList();
-            }
-          ),
         ],
+        elevation: 0.0,
+        backgroundColor: Color(0xff32322C),
+
       ),
       body: Center(
         child: Column(
+
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Container(
-                width: 200.0,
-                height: 200.0,
-                decoration: new BoxDecoration(
-                  border: new Border.all(
-                    width: 2.0,
-                    color: Colors.black,
-                    style: BorderStyle.solid,
-                  ),
-                  shape: BoxShape.circle,
-                ),
+              padding: const EdgeInsets.all(40.0),
                 child: Center (
-                  child: new Text('$currentBalance',
+                  child: new Text('\$$currentBalance',
                       textAlign: TextAlign.center,
                       style: new TextStyle(fontSize: 50.0)
                   ),
                 ),
-              ),
-            ),
+              ), //Current Balance Text
             Padding(
               padding: EdgeInsets.only(bottom: 5.0),
               child: Row(children: <Widget> [
@@ -272,8 +308,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: new Container(
                       margin: const EdgeInsets.only(left: 10.0, right: 20.0),
                       child: Divider(
-                        color: Colors.black,
-                        height: 30.0,
+                        color: Color(0xff13C4A3),
+                        height: 50.0,
                       )
                   ),
                 ),
@@ -282,14 +318,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: new Container(
                         margin: const EdgeInsets.only(left: 20.0, right: 10.0),
                         child: Divider(
-                          color: Colors.black,
-                          height: 30.0,
+                          color: Color(0xff13C4A3),
+                          height: 50.0,
                         )
                     )
                 )
               ]
               ),
-            ),
+            ), //Transactions Line Seperators
             Expanded(
               child: new FutureBuilder<List<MoneyTransaction>>(
                 future: fetchTransactionsFromDatabase(),
@@ -301,11 +337,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, index) {
                           return new Card(
+                              
                               child: ListTile(
                                 leading: Text(snapshot.data[index].date),
                                 title: Text(snapshot.data[index].name),
                                 trailing: Text("\$" + snapshot.data[index].total),
-                              )
+                              ),
+                              color: Colors.white30,
                           );
                         },
                       );
@@ -316,7 +354,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   }
                 },
               ),
-            ),
+            ),//Builds Transaction List View
           ],
         )
       )
@@ -333,16 +371,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void _showSnackBar(String text) {
     scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(text)));
   }
-
-
-  void navigateToMoneyTransactionList() {
-    saveCurrentBalance();
-    Navigator.push(
-      context,
-      new MaterialPageRoute(builder: (context) => new MyMoneyTransactionPage()),
-    );
-  }
-
 
   Future<List<MoneyTransaction>> fetchTransactionsFromDatabase() async {
     var dbHelper = DBHelper();
